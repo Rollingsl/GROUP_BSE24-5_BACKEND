@@ -6,7 +6,7 @@ test("returns a 200 on successful signin", async () => {
     lastName: "Doe",
     gender: "male",
     email: "johndoe@gmail.com",
-    phoneNumber: "0787489045",
+    phoneNumber: "0777489045",
     role: "superadmin",
     password: "password",
   };
