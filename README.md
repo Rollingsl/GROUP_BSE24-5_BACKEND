@@ -1,16 +1,20 @@
 Docease: A Backend Application for Healthcare Management
+
 Docease is a backend application designed to enhance healthcare management services by providing efficient access and management of patient data. Utilizing PostgreSQL for its database, Firebase Docease aims to streamline various healthcare processes, ensuring that medical records are accurately and reliably accessible.
+
 Features
 •	Efficient Management of Patient Records: Facilitates easy handling of patient information.
 •	FirebasePostgreSQL Database Integration: Ensures robust data storage and retrieval.
 •	Scalable and Robust Backend Architecture: Built to support growing healthcare needs.
 •	Easy-to-Use Setup and Deployment Process: Simplifies the installation and configuration for users.
+
 Tech Stack
 •	Node.js: JavaScript runtime for building the backend.
 •	Firebase: Real-time database for storing data.
 •	PostgreSQL: Relational database for storing data.
 •	Sequelize: ORM for managing database interactions.
 •	pnpm: Fast package manager for dependency management.
+
 Setup
 Prerequisites
 Ensure the following are installed:
@@ -59,17 +63,28 @@ API Documentation
 The API provides various endpoints to manage patients and healthcare records:
 Patient Endpoints
 •	GET /patients: Retrieve a list of all patients.
+
 •	POST /patients: Add a new patient.
+
 •	GET /patients/{id}: Retrieve a specific patient by ID.
+
 •	PUT /patients/{id}: Update patient details by ID.
+
 •	DELETE /patients/{id}: Delete a patient by ID.
+
 Medical Record Endpoints
+
 •	GET /records: Retrieve all medical records.
+
 •	POST /records: Add a new medical record.
+
 •	GET /records/{id}: Retrieve a medical record by ID.
+
 •	PUT /records/{id}: Update a medical record by ID.
+
 •	DELETE /records/{id}: Delete a medical record by ID.
 Contributing
+
 To contribute to Docease:
 1.	Fork the repository.
 2.	Create a new branch for your feature:
