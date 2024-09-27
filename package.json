@@ -52,5 +52,8 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.2",
     "vitest": "^2.1.1"
+  },
+  "devDependencies": {
+    "jest-mock-extended": "4.0.0-beta1"
   }
 }
