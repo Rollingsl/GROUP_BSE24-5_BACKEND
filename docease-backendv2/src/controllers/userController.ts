@@ -16,7 +16,7 @@ const User = prisma.user;
 const AccessToken = prisma.accessToken;
 
 const signAccessToken = (userId: number) => {
-  const jwtSecret = process.env.JWT_SECRET!;
+  const jwtSecret = "Secret";
   return jwt.sign({ userId: userId }, jwtSecret, {
     expiresIn: "3h",
   });
