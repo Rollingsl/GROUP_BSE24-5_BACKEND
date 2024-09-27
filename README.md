@@ -54,14 +54,23 @@ CREATE DATABASE docease_db;
 5.	Run Database Migrations (if any):
 pnpm run migrate
 6.	Start the Application:
+
 pnpm start
+
 The application should now be running at http://localhost:3000.
+
 Running Tests
+
 To ensure the application's functionality, run:
+
 pnpm test
+
 API Documentation
+
 The API provides various endpoints to manage patients and healthcare records:
+
 Patient Endpoints
+
 •	GET /patients: Retrieve a list of all patients.
 
 •	POST /patients: Add a new patient.
