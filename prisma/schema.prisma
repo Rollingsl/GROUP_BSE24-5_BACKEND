@@ -4,8 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://kevin:BwmwaKu5lKntkYRgfedpiJ9DZZUxl1km@dpg-crmss523esus7382s920-a.oregon-postgres.render.com/docease"
-
+  url      = env("DOCEASE_DATABASE_URL")
 }
 
 enum Role {

@@ -7,7 +7,7 @@ import {
   TAppointmentStatus,
 } from "../types/appointment";
 import { notification } from "../utils/notification";
-
+import { TPushNotificationTitleEnum } from "../types/notification";
 import { createDoctorsPatient } from "./doctorsPatientController";
 import { AppointmentMessage } from "../utils/appointmentMessage";
 

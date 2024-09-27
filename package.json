@@ -6,10 +6,8 @@
   "scripts": {
     "start": "ts-node-dev src/app.ts",
     "test": "vitest",
-    "lint": "eslint ."
-
+    "lint": "node ./node_modules/eslint/bin/eslint src/routes/__test__/"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Doc-Ease/docease-backend.git"
@@ -57,10 +55,8 @@
     "vitest": "^2.1.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
     "eslint": "^9.11.1",
     "globals": "^15.9.0",
-    "jest-mock-extended": "4.0.0-beta1",
     "typescript-eslint": "^8.7.0"
   }
 }
