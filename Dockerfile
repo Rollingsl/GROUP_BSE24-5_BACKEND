@@ -15,4 +15,6 @@ RUN pnpm exec prisma generate
 
 ENV NODE_ENV=production
 
+EXPOSE 8000
+
 CMD ["pnpm", "start"]
