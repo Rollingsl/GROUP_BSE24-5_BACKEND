@@ -10,8 +10,8 @@ RUN pnpm install
 
 COPY . .
 
-# RUN pnpm exec prisma migrate deploy
-# RUN pnpm exec prisma generate
+RUN pnpm exec prisma migrate deploy
+RUN pnpm exec prisma generate
 
 ENV NODE_ENV=production
 
