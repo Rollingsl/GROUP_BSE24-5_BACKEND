@@ -16,7 +16,7 @@ const User = prisma.user;
 const AccessToken = prisma.accessToken;
 
 const signAccessToken = (userId: number) => {
-  const jwtSecret = process.env.JWT_SECRET!;
+  const jwtSecret = "dgjdsgosavwtdejjdshjsgassdhghjds";
   return jwt.sign({ userId: userId }, jwtSecret, {
     expiresIn: "3h",
   });
@@ -333,7 +333,7 @@ export const protect = asyncHandler(
         new AppError("You are not logged in! Please log in to get access", 401)
       );
     }
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded: any = jwt.verify(token, "dgjdsgosavwtdejjdshjsgassdhghjds");
     const userId = decoded.userId;
 
     const user = await User.findFirst({
@@ -363,7 +363,7 @@ export const protectDoctor = asyncHandler(
         new AppError("You are not logged in! Please log in to get access", 400)
       );
     }
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded: any = jwt.verify(token, "dgjdsgosavwtdejjdshjsgassdhghjds");
     const userId = decoded.userId;
 
     const user = await User.findFirst({

@@ -29,8 +29,7 @@ const app = express();
 
 let url: string;
 let allowOrigins = [
-  "https://doc-ease.netlify.app",
-  "https://docease-v2.netlify.app",
+  "https://group-bse-24-5.vercel.app",
 ];
 
 const corsOptions = {

@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DOCEASE_DATABASE_URL")
+  url      = "postgresql://doc-ease-jelly-db_owner:xsHAKP7RMY8c@ep-odd-firefly-a25ln6ja.eu-central-1.aws.neon.tech/doc-ease-jelly-db?sslmode=require"
 }
 
 enum Role {
