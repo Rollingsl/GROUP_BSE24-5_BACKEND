@@ -29,7 +29,7 @@ const app = express();
 
 let url: string;
 let allowOrigins = [
-  "https://group-bse-24-5.vercel.app",
+  "https://group-bse-24-5.vercel.app", "group-bse-24-5-chi.vercel.app",
 ];
 
 const corsOptions = {
