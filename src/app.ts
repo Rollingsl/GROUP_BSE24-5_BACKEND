@@ -22,6 +22,11 @@ import { doctorsPatientsRoutes } from "./routes/doctorsPatientRoute";
 import { twoFARoutes } from "./routes/twoFARoutes";
 import { sessionDeviceRoutes } from "./routes/sessionDeviceRoutes";
 import { rateLimitController } from "./controllers/rateLimitController";
+import {
+  startRequestMonitoringTimer,
+  endRequestMonitoringTimer,
+} from "./controllers/monitoringController";
+import { monitoringRoutes } from "./routes/monitoringRoutes";
 
 dotenv.config();
 
@@ -72,6 +77,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 app.use(rateLimitController);
+app.use(startRequestMonitoringTimer);
+
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/appointments", appointmentRoutes);
@@ -86,6 +93,9 @@ app.use("/api/v1/chat", chatRoutes);
 app.use("/api/v1/doctors-patient", doctorsPatientsRoutes);
 app.use("/api/v1/2fa", twoFARoutes);
 app.use("/api/v1/session-devices", sessionDeviceRoutes);
+
+app.use(monitoringRoutes);
+app.use(endRequestMonitoringTimer);
 
 videoConferencingController(io);
 app.use(keepActiveRoutes);
