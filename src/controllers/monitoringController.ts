@@ -2,13 +2,14 @@ import promClient from "prom-client";
 import { Response, Request, NextFunction } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import url from "url";
+// Create a registry for Prometheus metrics
 
 const register = new promClient.Registry();
 
 register.setDefaultLabels({
   app: "Docease-backend",
 });
-
+// Define a histogram for tracking HTTP request durations in milliseconds
 promClient.collectDefaultMetrics({ register });
 
 const httpRequestDurationMicroseconds = new promClient.Histogram({
@@ -17,7 +18,7 @@ const httpRequestDurationMicroseconds = new promClient.Histogram({
   labelNames: ["method", "route", "code"],
   buckets: [0.1, 5, 15, 50, 100, 200, 300, 400, 500], // buckets for response time from 0.1ms to 500ms
 });
-
+// Middleware to start tracking the request time
 export const startRequestMonitoringTimer = (
   req: Request,
   res: Response,
