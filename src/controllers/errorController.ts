@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/error";
+// Create a new Prometheus registry to store custom metrics
 
 const handleJWTError = () =>
   new AppError("Invalid token. Please log in again!", 401);
-
+// Set default labels for all collected metrics 
 const handleJWTExpiredError = () =>
   new AppError("Your token has expired! Please log in again.", 401);
-
+// Collect default metrics 
 const sendErrorProd = (err: AppError, req: Request, res: Response) => {
   console.log("ERROR", err);
 
@@ -19,7 +20,6 @@ const sendErrorProd = (err: AppError, req: Request, res: Response) => {
       });
     }
   }
-
   return res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
