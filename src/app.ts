@@ -1,32 +1,32 @@
-import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import logger from "morgan";
+import express, { Request, Response } from "express";
 import http from "http";
-import { Server } from "socket.io";
 import { ExpressPeerServer } from "peer";
+import { Server } from "socket.io";
 import { errorController } from "./controllers/errorController";
-import { userRoutes } from "./routes/userRoutes";
+import {
+  endRequestMonitoringTimer,
+  startRequestMonitoringTimer,
+} from "./controllers/monitoringController";
+import { rateLimitController } from "./controllers/rateLimitController";
+import { videoConferencingController } from "./controllers/videoConferencingController";
+import logger from "./logger"; // Import Winston logger
+import { videoConferenceRoutes } from "./routes/VideoConferencingRoutes";
 import { appointmentRoutes } from "./routes/appointmentRoutes";
-import { scheduleRoutes } from "./routes/scheduleRoutes";
+import { chatRoutes } from "./routes/chatRoutes";
+import { deviceRoutes } from "./routes/deviceRoutes";
+import { doctorsPatientsRoutes } from "./routes/doctorsPatientRoute";
+import { keepActiveRoutes } from "./routes/keepActiveRoutes";
 import { medicalRecordRoutes } from "./routes/medicalRoutes";
 import { mentalHealthRoutes } from "./routes/mentalHealthRoutes";
-import { keepActiveRoutes } from "./routes/keepActiveRoutes";
-import { notificationRoutes } from "./routes/notificationRoutes";
-import { deviceRoutes } from "./routes/deviceRoutes";
-import { statusRoutes } from "./routes/statusRoutes";
-import { videoConferencingController } from "./controllers/videoConferencingController";
-import { videoConferenceRoutes } from "./routes/VideoConferencingRoutes";
-import { chatRoutes } from "./routes/chatRoutes";
-import { doctorsPatientsRoutes } from "./routes/doctorsPatientRoute";
-import { twoFARoutes } from "./routes/twoFARoutes";
-import { sessionDeviceRoutes } from "./routes/sessionDeviceRoutes";
-import { rateLimitController } from "./controllers/rateLimitController";
-import {
-  startRequestMonitoringTimer,
-  endRequestMonitoringTimer,
-} from "./controllers/monitoringController";
 import { monitoringRoutes } from "./routes/monitoringRoutes";
+import { notificationRoutes } from "./routes/notificationRoutes";
+import { scheduleRoutes } from "./routes/scheduleRoutes";
+import { sessionDeviceRoutes } from "./routes/sessionDeviceRoutes";
+import { statusRoutes } from "./routes/statusRoutes";
+import { twoFARoutes } from "./routes/twoFARoutes";
+import { userRoutes } from "./routes/userRoutes";
 
 dotenv.config();
 
@@ -34,7 +34,8 @@ const app = express();
 
 let url: string;
 let allowOrigins = [
-  "https://group-bse-24-5.vercel.app", "group-bse-24-5-chi.vercel.app",
+  "https://group-bse-24-5.vercel.app", 
+  "group-bse-24-5-chi.vercel.app",
 ];
 
 const corsOptions = {
@@ -48,7 +49,6 @@ const corsOptions = {
 };
 
 if (process.env.NODE_ENV === "production") {
-  // app.use(cors(corsOptions));
   app.use(cors({ origin: "*" }));
 } else {
   app.use(cors());
@@ -59,26 +59,25 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: allowOrigins,
-
     methods: ["GET", "POST"],
   },
   allowEIO3: true,
 });
 
-// const peerServer = ExpressPeerServer(server, {
-//   path: "/peerjs",
-// });
-
 const peerServer = ExpressPeerServer(server);
 
-// app.use("/api/v1/conferencing", peerServer);
 app.use("/peerjs", peerServer);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(logger("dev"));
+
+// Use Winston logger instead of Morgan
+app.use((req: Request, res: Response, next) => {
+  logger.info(`${req.method} ${req.url} - ${req.ip}`);
+  next();
+});
+
 app.use(rateLimitController);
 app.use(startRequestMonitoringTimer);
-
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/appointments", appointmentRoutes);
@@ -101,15 +100,17 @@ videoConferencingController(io);
 app.use(keepActiveRoutes);
 app.use(errorController);
 
+// Route not found handler with Winston logging
 app.use("*", (req: Request, res: Response) => {
+  logger.warn(`Route not found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
     status: "fail",
     message: "Route not found!",
   });
 });
 
-const PORT = 8000 ;
+const PORT = 8000;
 
 server.listen(PORT, () => {
-  console.log(`Docease server running on port ${PORT}`);
+  logger.info(`Docease server running on port ${PORT}`);
 });
