@@ -4,7 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { notification } from "../utils/notification";
 import { PrismaClient } from "@prisma/client";
 import { TConfNotification, TNotification } from "../types/notification";
-
+// Initialize Prisma client to interact with the database
 const prisma = new PrismaClient();
 const Notification = prisma.notification;
 const Device = prisma.device;
@@ -78,7 +78,7 @@ const sendPushNotification = async (notificationMsg: TNotification) => {
     });
   });
 };
-
+  // Store the notification ID and timestamp
 export const getLiveNotifications = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     res.setHeader("Content-Type", "text/event-stream");
