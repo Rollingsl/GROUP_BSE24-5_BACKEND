@@ -1,4 +1,4 @@
-name: Buid and Test
+name: Build and Test
 
 on:
   push:
@@ -9,30 +9,49 @@ on:
       - main
 
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js 
+  setup-node:
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18 
 
+  install-dependencies:
+    runs-on: ubuntu-latest
+    needs: setup-node
+    steps:
       - name: Install PNPM
         run: npm install -g pnpm 
 
-      - name: Install dependencies 
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+  lint:
+    runs-on: ubuntu-latest
+    needs: install-dependencies
+    steps:
       - name: Run ESLint Check
         run: npm run lint
 
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
       - name: Run app tests
         run: pnpm run test
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
       - uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
           service_id: ${{ secrets.SERVICE_ID }}
