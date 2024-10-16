@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test, and Deploy
 
 on:
   push:
@@ -9,51 +9,92 @@ on:
       - main
 
 jobs:
-  checkout:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-  setup-node:
-    runs-on: ubuntu-latest
-    needs: checkout
-    steps:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 
+          node-version: 18
 
-  install-dependencies:
-    runs-on: ubuntu-latest
-    needs: setup-node
-    steps:
       - name: Install PNPM
-        run: npm install -g pnpm 
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        working-directory: ${{ github.workspace }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
   lint:
+    needs: setup
     runs-on: ubuntu-latest
-    needs: install-dependencies
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Restore cached dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Run ESLint Check
-        run: npm run lint
+        run: pnpm run lint
 
   test:
+    needs: setup
     runs-on: ubuntu-latest
-    needs: lint
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Restore cached dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Run app tests
         run: pnpm run test
 
   deploy:
+    needs: [lint, test]
     runs-on: ubuntu-latest
-    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
-      - uses: JorgeLNJunior/render-deploy@v1.4.4
+      - name: Deploy to Render
+        uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
           service_id: ${{ secrets.SERVICE_ID }}
           api_key: ${{ secrets.RENDER_API_KEY }}
