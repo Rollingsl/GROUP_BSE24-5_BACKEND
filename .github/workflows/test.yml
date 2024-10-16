@@ -30,9 +30,11 @@ jobs:
     steps:
       - name: Install PNPM
         run: npm install -g pnpm 
+        working-directory: ${{ github.workspace }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        working-directory: ${{ github.workspace }}
 
   lint:
     runs-on: ubuntu-latest
