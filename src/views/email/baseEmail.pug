@@ -4,38 +4,48 @@
 doctype html
 html
   head
+    // Meta tag for responsive design
     meta(name='viewport', content='width=device-width')
+    
+    // Meta tag for setting content type and character encoding
     meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    
+    // Email subject dynamically inserted
     title= subject
 
+    // Include external styles for the email
     include _style
   body
+    // Main body table, structure for the email layout
     table.body(role='presentation', border='0', cellpadding='0', cellspacing='0')
       tbody
         tr
-          td
+          td // Empty cell for spacing
           td.container
             .content
               // START CENTERED WHITE CONTAINER
               table.main(role='presentation')
-
                 // START MAIN AREA
                 tbody
                   tr
                     td.wrapper
+                      // Wrapper table for email content
                       table(role='presentation', border='0', cellpadding='0', cellspacing='0')
                         tbody
                           tr
                             td
                               // CONTENT
                               block content
+              // END MAIN AREA
 
               // START FOOTER
               .footer
+                // Footer section, can include unsubscribe links or contact information
                 table(role='presentation', border='0', cellpadding='0', cellspacing='0')
                   tbody
                     tr
                       td.content-block
+                        // Footer copyright information
                         span.apple-link © #{new Date().getFullYear()} All Rights Reserved by Docease
                        
-          //- td  
+          //- td   // This td seems to be a placeholder or for additional spacing
