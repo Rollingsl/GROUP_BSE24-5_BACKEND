@@ -1,17 +1,29 @@
+//- Extending the base email layout/template
 extends baseEmail
 
+//- Defining the content block for this email template
 block content
+  //- Greeting the user with their first name dynamically inserted
   p Hi #{firstName},
-  p  Welcome to Docease , we're glad to have you 🎉
+  
+  //- Welcome message for the user
+  p  Welcome to Docease, we're glad to have you 🎉
+  
+  //- Button table structure for 'Get Started' button
   table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
     tbody
-    
       tr
         td(align='left')
+          //- Inner table for button alignment and layout
           table(role='presentation', border='0', cellpadding='0', cellspacing='0')
             tbody
               tr
                 td
+                  //- 'Get Started' button with a link to the login page
                   a(href=`https://docease-v2.netlify.app/login`, target='_blank') Get Started
-  p If you need any help with getting your account  setup, please don't hesitate to contact us!
+
+  //- Informative message offering help for setting up the user's account
+  p If you need any help with getting your account setup, please don't hesitate to contact us!
+  
+  //- Support email for customer inquiries
   p  docease@support.com
